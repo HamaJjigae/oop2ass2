@@ -1,0 +1,134 @@
+﻿@page "/flights"
+@using Traveless.ViewModels
+@inject FlightsViewModel ViewModel
+
+<div class="container">
+    <h2 class="page-title">Flight Finder</h2>
+
+    <div class="search-container">
+        <div class="search-item">
+            <label for="from">From:</label>
+            <input id="from" class="search-box" @bind="ViewModel.From" placeholder="Any" />
+        </div>
+        <div class="search-item">
+            <label for="to">To:</label>
+            <input id="to" class="search-box" @bind="ViewModel.To" placeholder="Any" />
+        </div>
+        <div class="search-item">
+            <label for="day">Day:</label>
+            <input id="day" class="search-box" @bind="ViewModel.Day" placeholder="Any" />
+        </div>
+        <div class="search-item">
+            <label>&nbsp;</label>
+            <button class="search-button" @onclick="() => ViewModel.SearchCommand.Execute(null)">Find Flights</button>
+        </div>
+    </div>
+
+    <h2 class="results-title">Flights</h2>
+    <div class="results-box">
+        @if (ViewModel.FlightResult != null && ViewModel.FlightResult.Any())
+        {
+            <select @bind="ViewModel.SelectedFlightCode" class="flight-dropdown">
+                <option value="">Select a flight</option>
+                @foreach (var flight in ViewModel.FlightResult)
+                {
+                    <option value="@flight.FlightCode">
+                        @if (flight.FlightCode != null)
+                        @flight.FlightCode,
+                        @flight.Airline,
+                        @flight.Departure,
+                        @flight.Arrival,
+                        @flight.Day,
+                        @flight.Time,
+                        @flight.Cost
+                    </option>
+                }
+            </select>
+        }
+        else
+        {
+            <span style="color: rgba(128,128,128,0.5); padding-bottom: 10px;">Loading...</span>
+        }
+    </div>
+
+    <h2 class="reserve-title">Reserve</h2>
+    <div class="flight-container">
+        <div class="flight-item">
+            <label>Flight code:</label>
+            <div class="flight-box">
+                @if (ViewModel.SelectedFlight != null)
+                {
+                    <span style="color: black;">@ViewModel.SelectedFlight.FlightCode</span>
+                }
+                else
+                {
+                    <span style="color: rgba(128,128,128,0.5);">Flight</span>
+                }
+            </div>
+        </div>
+        <div class="flight-item">
+            <label>Airline:</label>
+            <div class="flight-box">
+                @if (ViewModel.SelectedFlight != null)
+                {
+                    <span style="color: black;">@ViewModel.SelectedFlight.Airline</span>
+                }
+                else
+                {
+                    <span style="color: rgba(128,128,128,0.5);">Airline</span>
+                }
+            </div>
+        </div>
+        <div class="flight-item">
+            <label>Day:</label>
+            <div class="flight-box">
+                @if (ViewModel.SelectedFlight != null)
+                {
+                    <span style="color: black;">@ViewModel.SelectedFlight.Day</span>
+                }
+                else
+                {
+                    <span style="color: rgba(128,128,128,0.5);">Day</span>
+                }
+            </div>
+        </div>
+        <div class="flight-item">
+            <label>Time:</label>
+            <div class="flight-box">
+                @if (ViewModel.SelectedFlight != null)
+                {
+                    <span style="color: black;">@ViewModel.SelectedFlight.Time</span>
+                }
+                else
+                {
+                    <span style="color: rgba(128,128,128,0.5);">Time</span>
+                }
+            </div>
+        </div>
+        <div class="flight-item">
+            <label>Cost:</label>
+            <div class="flight-box">
+                @if (ViewModel.SelectedFlight != null)
+                {
+                    <span style="color: black;">@ViewModel.SelectedFlight.Cost</span>
+                }
+                else
+                {
+                    <span style="color: rgba(128,128,128,0.5);">0</span>
+                }
+            </div>
+        </div>
+        <div class="flight-item">
+            <label>Name:</label>
+            <input type="text" class="flight-box" @bind="ViewModel.Name" placeholder="Name" style="color:black;"/>
+        </div>
+        <div class="flight-item">
+            <label>Citizenship:</label>
+            <input type="text" class="flight-box" @bind="ViewModel.Citizenship" placeholder="Citizenship" style="color:black;"/>
+        </div>
+        <button class="reserve-button" @onclick="() => ViewModel.ReserveCommand.Execute(null)">Reserve</button>
+        <div class="reservation-code">
+            Reservation code: @ViewModel.ReservationCode
+        </div>
+    </div>
+</div>
